@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Veterinary Drug Calculator</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 600px;
+            margin: 20px auto;
+            padding: 20px;
+            border: 1px solid #ccc;
+            border-radius: 10px;
+            background-color: #f9f9f9;
+        }
+
+        label, select, input {
+            display: block;
+            margin: 10px 0;
+        }
+
+        .result {
+            margin-top: 20px;
+            padding: 10px;
+            border: 1px solid #ddd;
+            background-color: #eef;
+        }
+
+        h1 {
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+
+    <h1>Veterinary Drug Calculator</h1>
+
+    <label for="species">Select Species:</label>
+    <select id="species">
+        <option value="dog">Dog</option>
+        <option value="cat">Cat</option>
+    </select>
+
+    <label for="weight">Enter Weight (kg):</label>
+    <input type="number" id="weight" placeholder="Enter weight in kg" step="0.1" min="0">
+
+    <button onclick="calculate()">Calculate Drug Volumes</button>
+
+    <div id="results" class="result"></div>
+
+    <script>
+        function calculate() {
+            const species = document.getElementById("species").value;
+            const weight = parseFloat(document.getElementById("weight").value);
+            let results = "";
+
+            if (!weight || weight <= 0) {
+                results = "Please enter a valid weight.";
+            } else {
+                // Drug volumes for dogs and cats
+                const drugVolumes = {
+                    dog: {
+                        "Methadone (0.02 mL/kg)": 0.02,
+                        "Medetomidine (0.005 mL/kg)": 0.005,
+                        "Alfaxalone (0.2 mL/kg)": 0.2,
+                        "Atipamezole (full medetomidine dose)": 0.005, // same as medetomidine
+                        "Atropine (GA) (0.046 mL/kg)": 0.046,
+                        "Atropine (CPR) (0.06 mL/kg)": 0.06,
+                        "Adrenaline (LOW) (0.01 mL/kg)": 0.01,
+                        "Adrenaline (HIGH) (0.1 mL/kg)": 0.1,
+                        "Dobutamine (0.48 mL/kg)": 0.48,
+                        "Naloxone (0.1 mL/kg)": 0.1
+                    },
+                    cat: {
+                        "Methadone (0.02 mL/kg)": 0.02,
+                        "Medetomidine (0.01 mL/kg)": 0.01,
+                        "Alfaxalone (0.2 mL/kg)": 0.2,
+                        "Atipamezole (half medetomidine dose)": 0.005, // half of medetomidine
+                        "Atropine (GA) (0.046 mL/kg)": 0.046,
+                        "Atropine (CPR) (0.06 mL/kg)": 0.06,
+                        "Adrenaline (LOW) (0.01 mL/kg)": 0.01,
+                        "Adrenaline (HIGH) (0.1 mL/kg)": 0.1,
+                        "Dobutamine (0.48 mL/kg)": 0.48,
+                        "Naloxone (0.1 mL/kg)": 0.1
+                    }
+                };
+
+                const selectedDrugs = drugVolumes[species];
+
+                for (let drug in selectedDrugs) {
+                    const dose = selectedDrugs[drug];
+                    const volume = dose * weight;
+                    results += `<p><strong>${drug}:</strong> ${parseFloat(volume.toPrecision(3))} mL</p>`;
+                }
+            }
+
+            document.getElementById("results").innerHTML = results;
+        }
+    </script>
+
+</body>
+</html>
